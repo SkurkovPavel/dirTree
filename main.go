@@ -37,10 +37,11 @@ func dirTree(out interface{}, filePath string, printFiles bool) (error) {
 
 		pathList = append(pathList, path)
 
+
 		for _,line := range pathList{
 
 			//тут нужно както отформатировать вывод
-			prinPath += line+"\t\n"
+			prinPath = prinPath + buildDirStruct(line)
 		}
 
 		fmt.Println(prinPath)
@@ -57,6 +58,7 @@ func isFileIgnored(path string) bool{
 	currentPathList :=strings.Split(path, string(os.PathSeparator))
 
 
+
 	for _,ignored := range  ignoredFiles {
 
 			if currentPathList[0] == ignored {
@@ -68,4 +70,23 @@ func isFileIgnored(path string) bool{
 	return false
 }
 
-func getAllPaths(){}
+func buildDirStruct(path string) string{
+
+	var DirStruct string
+
+	pathListAll := strings.Split(path, string(os.PathSeparator))
+
+	pathList := pathListAll[1:]
+	if len(pathList) == 0 {
+		return DirStruct
+	}
+	for index, item := range pathList {
+		if index == (len(pathList) - 1) {
+			DirStruct = DirStruct + `├───` + item
+		} else {
+			DirStruct = DirStruct +  "│\t"
+		}
+	}
+	return DirStruct + "\n"
+
+}
